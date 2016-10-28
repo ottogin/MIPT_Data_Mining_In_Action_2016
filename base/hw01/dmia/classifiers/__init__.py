@@ -1,2 +1,2 @@
-from logistic_regression import LogisticRegression
-from binary_boosting import BinaryBoostingClassifier
+from dmia.classifiers.logistic_regression import LogisticRegression
+from dmia.classifiers.binary_boosting import BinaryBoostingClassifier

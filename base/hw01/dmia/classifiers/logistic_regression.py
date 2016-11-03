@@ -1,16 +1,17 @@
 import numpy as np
 from scipy import sparse
-from math import exp, log
+import scipy as sp
+from math import exp
 
 
 def loss_func(x):
-    return log(1 + exp(-x))
+    return np.logaddexp(-x)
 
 def dloss_func(x):
     return (-1) * exp(-x) / (1 + exp(-x))
  
 def sigmoid(x):
-	return (1. / (1  + exp(x)) )
+	return sp.special.expit(x)
 
 def dsigmoid(x):
 	return sigmoid(x)*(1 - sigmoid(x))
@@ -88,8 +89,8 @@ class LogisticRegression:
         return self
 
     def f(self, X):
-        X = X.toarray()
-        return np.dot(self.w, np.transpose(X))
+        Xt = np.transpose(X)
+        return self.w.dot(Xt)
         
     def predict_proba(self, X, append_bias=False):
         """
@@ -171,7 +172,9 @@ class LogisticRegression:
         loss /= X_batch.shape[0]
         # Add regularization to the loss and gradient.
         # Note that you have to exclude bias term in regularization.
-        #TODO:
+        loss += 1/2 * np.dot(self.w, self.w)
+        dw += self.w
+            
         return loss, dw
 
     @staticmethod
